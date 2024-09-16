@@ -5,13 +5,16 @@ import {
   sendEmailVerification,
   UserCredential,
 } from '@angular/fire/auth';
+import { doc, Firestore, setDoc } from '@angular/fire/firestore';
 import { from, Observable } from 'rxjs';
+import { IUser } from '../../interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private _fireAuth = inject(Auth);
+  private _firestore = inject(Firestore);
 
   constructor() {}
 
@@ -24,6 +27,8 @@ export class AuthService {
       .then(async (response) => {
         await sendEmailVerification(response.user);
 
+        await this.saveUserDetails(response.user as IUser);
+
         return response;
       })
       .catch((error) => {
@@ -31,5 +36,14 @@ export class AuthService {
       });
 
     return from(response);
+  }
+
+  async saveUserDetails(user: IUser) {
+    const userRef = doc(this._firestore, `users/${user.uid}`);
+    await setDoc(userRef, {
+      uid: user.uid,
+      email: user.email,
+      displayName: user.displayName,
+    });
   }
 }
