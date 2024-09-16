@@ -1,1 +1,38 @@
-<p>input-field works!</p>
+<div class="relative">
+  <input
+    [type]="type()"
+    [id]="id()"
+    [formControl]="control()"
+    [placeholder]="placeholder()"
+    [required]="required()"
+    class="py-3 ps-11 block w-full border-gray-200 shadow-2xl outline-none rounded-2xl text-sm focus:z-10 placeholder:text-black disabled:opacity-50 disabled:pointer-events-none"
+  />
+  <div
+    class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-4"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="gray"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="lucide lucide-mail"
+    >
+      <rect width="20" height="16" x="2" y="4" rx="2" />
+      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+    </svg>
+  </div>
+  @if (controlIsRequired) {
+  <span class="text-red-500 text-xs absolute ml-1"
+    >This field is required.</span
+  >
+
+  } @if (controlHasEmailError) {
+  <span class="text-red-500 text-xs absolute ml-1">Invalid email.</span>
+
+  }
+</div>
