@@ -3,11 +3,16 @@ import {
   Auth,
   createUserWithEmailAndPassword,
   sendEmailVerification,
+  signInWithEmailAndPassword,
   UserCredential,
 } from '@angular/fire/auth';
 import { doc, Firestore, setDoc } from '@angular/fire/firestore';
 import { from, Observable } from 'rxjs';
 import { IUser } from '../../interfaces/user.interface';
+import {
+  ACCESS_TOKEN_KEY,
+  saveToLocalStorage,
+} from '../../helpers/constants.helper';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +34,22 @@ export class AuthService {
 
         await this.saveUserDetails(response.user as IUser);
 
+        return response;
+      })
+      .catch((error) => {
+        throw new Error(error.message);
+      });
+
+    return from(response);
+  }
+
+  login(email: string, password: string): Observable<UserCredential> {
+    const response = signInWithEmailAndPassword(this._fireAuth, email, password)
+      .then(async (response) => {
+        const token = await response.user.getIdToken();
+
+        saveToLocalStorage(ACCESS_TOKEN_KEY, token);
+        
         return response;
       })
       .catch((error) => {
