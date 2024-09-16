@@ -1,1 +1,14 @@
-<p>toaster works!</p>
+@if (show) {
+<div class="fixed bottom-4 left-0 right-0 flex justify-center z-50">
+  <div
+    [ngClass]="{
+      'bg-green-500': status() === 'success',
+      'bg-red-500': status() === 'error',
+      'bg-blue-500': status() === 'info'
+    }"
+    class="text-white px-6 py-2 rounded-3xl shadow-lg animate-slide-up"
+  >
+    <p class="text-sm">{{ message() }}</p>
+  </div>
+</div>
+}
