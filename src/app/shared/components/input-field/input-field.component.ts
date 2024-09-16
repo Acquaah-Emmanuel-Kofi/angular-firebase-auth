@@ -18,4 +18,20 @@ export class InputFieldComponent {
   control = input.required<FormControl | AbstractControl | any>();
   required = input<boolean>(false);
   id = input<string>();
+
+  get controlIsRequired() {
+    return (
+      this.control().hasError('required') &&
+      this.control().touched &&
+      this.control().invalid
+    );
+  }
+
+  get controlHasEmailError() {
+    return (
+      this.control().hasError('email') &&
+      this.control().touched &&
+      this.control().invalid
+    );
+  }
 }
