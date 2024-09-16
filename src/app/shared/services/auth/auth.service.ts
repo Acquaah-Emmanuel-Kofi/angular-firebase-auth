@@ -12,8 +12,10 @@ import { from, Observable } from 'rxjs';
 import { IUser } from '../../interfaces/user.interface';
 import {
   ACCESS_TOKEN_KEY,
+  removeFromLocalStorage,
   saveToLocalStorage,
 } from '../../helpers/constants.helper';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +23,7 @@ import {
 export class AuthService {
   private _fireAuth = inject(Auth);
   private _firestore = inject(Firestore);
+  private _router = inject(Router);
 
   constructor() {}
 
@@ -63,6 +66,8 @@ export class AuthService {
   signOut() {
     signOut(this._fireAuth)
       .then((response) => {
+        removeFromLocalStorage(ACCESS_TOKEN_KEY);
+        this._router.navigate(['/']);
         return response;
       })
       .catch((error) => {
