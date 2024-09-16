@@ -2,17 +2,11 @@ import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { BrandComponent } from '../../shared/components/brand/brand.component';
 import { InputFieldComponent } from '../../shared/components/input-field/input-field.component';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../shared/services/auth/auth.service';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-signup',
   standalone: true,
   imports: [
     RouterLink,
@@ -21,10 +15,10 @@ import { AuthService } from '../../shared/services/auth/auth.service';
     FormsModule,
     ReactiveFormsModule,
   ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
+  templateUrl: './signup.component.html',
+  styleUrl: './signup.component.scss',
 })
-export class LoginComponent {
+export class SignupComponent {
   alertMessage = signal<string>('');
 
   form: FormGroup;
@@ -43,7 +37,7 @@ export class LoginComponent {
     const { email, password } = this.form.value;
 
     if (this.formIsvalid()) {
-      this._authService.login(email, password).subscribe({
+      this._authService.signUp(email, password).subscribe({
         next: () => {
           this.handleResponse();
         },
@@ -61,7 +55,7 @@ export class LoginComponent {
   }
 
   handleResponse() {
-    this.showAlert('Login successfully');
+    this.showAlert('User signed up successfully');
     this.form.reset();
     this._router.navigate(['/dashboard']);
   }
