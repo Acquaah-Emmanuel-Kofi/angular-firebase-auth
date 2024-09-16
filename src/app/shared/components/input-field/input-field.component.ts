@@ -19,6 +19,8 @@ export class InputFieldComponent {
   required = input<boolean>(false);
   id = input<string>();
 
+  eyeIsToggled: boolean = false;
+
   get controlIsRequired() {
     return (
       this.control().hasError('required') &&
@@ -33,5 +35,9 @@ export class InputFieldComponent {
       this.control().touched &&
       this.control().invalid
     );
+  }
+
+  toggleShowPassword() {
+    this.eyeIsToggled = !this.eyeIsToggled;
   }
 }
