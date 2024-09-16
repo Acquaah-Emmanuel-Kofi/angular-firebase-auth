@@ -61,7 +61,7 @@ export class LoginComponent {
   }
 
   handleResponse() {
-    this.showAlert('User signed up successfully');
+    this.showAlert('Login successfully');
     this.form.reset();
     this._router.navigate(['/dashboard']);
   }
