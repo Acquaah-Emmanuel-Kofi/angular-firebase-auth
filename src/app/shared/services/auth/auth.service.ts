@@ -12,6 +12,7 @@ import { from, Observable } from 'rxjs';
 import { IUser } from '../../interfaces/user.interface';
 import {
   ACCESS_TOKEN_KEY,
+  getFromLocalStorage,
   removeFromLocalStorage,
   saveToLocalStorage,
 } from '../../helpers/constants.helper';
@@ -53,7 +54,7 @@ export class AuthService {
         const token = await response.user.getIdToken();
 
         saveToLocalStorage(ACCESS_TOKEN_KEY, token);
-        
+
         return response;
       })
       .catch((error) => {
@@ -82,5 +83,9 @@ export class AuthService {
       email: user.email,
       displayName: user.displayName,
     });
+  }
+
+  public isAuthenticated(): boolean {
+    return !!getFromLocalStorage(ACCESS_TOKEN_KEY);
   }
 }
