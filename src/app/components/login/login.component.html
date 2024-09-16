@@ -7,4 +7,32 @@
     <h1 class="font-bold text-2xl mb-4 text-black">Let's Sign In!</h1>
     <p class="text-black text-sm">Login to Your Account to Continue</p>
   </div>
+
+  <form>
+    <div class="space-y-5">
+      <div>
+        <app-input-field
+          [control]="form.get('email')"
+          type="email"
+          id="email-input"
+          placeholder="Email"
+          [required]="true"
+        ></app-input-field>
+      </div>
+
+      <div>
+        <app-input-field
+          [control]="form.get('password')"
+          type="password"
+          id="password-input"
+          placeholder="Password"
+          [required]="true"
+        ></app-input-field>
+      </div>
+    </div>
+
+ 
+  </form>
+
+  
 </section>
