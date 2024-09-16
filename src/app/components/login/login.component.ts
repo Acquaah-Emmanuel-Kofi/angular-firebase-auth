@@ -10,6 +10,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { AuthService } from '../../shared/services/auth/auth.service';
+import { LoaderComponent } from '../../shared/components/loader/loader.component';
 
 @Component({
   selector: 'app-login',
@@ -20,12 +21,14 @@ import { AuthService } from '../../shared/services/auth/auth.service';
     InputFieldComponent,
     FormsModule,
     ReactiveFormsModule,
+    LoaderComponent,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   alertMessage = signal<string>('');
+  isLoading: boolean = false;
 
   form: FormGroup;
 
@@ -43,11 +46,14 @@ export class LoginComponent {
     const { email, password } = this.form.value;
 
     if (this.formIsvalid()) {
+      this.isLoading = true;
+
       this._authService.login(email, password).subscribe({
         next: () => {
           this.handleResponse();
         },
         error: (error) => {
+          this.isLoading = false;
           this.showAlert(error.message);
         },
       });
@@ -61,6 +67,7 @@ export class LoginComponent {
   }
 
   handleResponse() {
+    this.isLoading = false;
     this.showAlert('Login successfully');
     this.form.reset();
     this._router.navigate(['/dashboard']);
