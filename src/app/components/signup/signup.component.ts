@@ -2,8 +2,15 @@ import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { BrandComponent } from '../../shared/components/brand/brand.component';
 import { InputFieldComponent } from '../../shared/components/input-field/input-field.component';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { AuthService } from '../../shared/services/auth/auth.service';
+import { LoaderComponent } from '../../shared/components/loader/loader.component';
 
 @Component({
   selector: 'app-signup',
@@ -14,12 +21,14 @@ import { AuthService } from '../../shared/services/auth/auth.service';
     InputFieldComponent,
     FormsModule,
     ReactiveFormsModule,
+    LoaderComponent
   ],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
 })
 export class SignupComponent {
   alertMessage = signal<string>('');
+  isLoading: boolean = false;
 
   form: FormGroup;
 
@@ -37,11 +46,14 @@ export class SignupComponent {
     const { email, password } = this.form.value;
 
     if (this.formIsvalid()) {
+      this.isLoading = true;
+
       this._authService.signUp(email, password).subscribe({
         next: () => {
           this.handleResponse();
         },
         error: (error) => {
+          this.isLoading = false;
           this.showAlert(error.message);
         },
       });
@@ -55,6 +67,7 @@ export class SignupComponent {
   }
 
   handleResponse() {
+    this.isLoading = false;
     this.showAlert('User signed up successfully');
     this.form.reset();
     this._router.navigate(['/dashboard']);
