@@ -11,6 +11,7 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../../shared/services/auth/auth.service';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
+import { ToasterComponent } from '../../shared/components/toaster/toaster.component';
 
 @Component({
   selector: 'app-signup',
@@ -21,14 +22,18 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
     InputFieldComponent,
     FormsModule,
     ReactiveFormsModule,
-    LoaderComponent
+    LoaderComponent,
+    ToasterComponent
   ],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
 })
 export class SignupComponent {
-  alertMessage = signal<string>('');
   isLoading: boolean = false;
+
+  showToast: boolean = false;
+  toastMessage: string = '';
+  toastStatus: 'success' | 'error' | 'info' = 'info';
 
   form: FormGroup;
 
@@ -54,11 +59,11 @@ export class SignupComponent {
         },
         error: (error) => {
           this.isLoading = false;
-          this.showAlert(error.message);
+          this.triggerToast('error', error.message);
         },
       });
     } else {
-      this.showAlert('Form is not valid');
+      this.triggerToast('error', 'Form is not valid');
     }
   }
 
@@ -68,16 +73,18 @@ export class SignupComponent {
 
   handleResponse() {
     this.isLoading = false;
-    this.showAlert('User signed up successfully');
+    this.triggerToast('success', 'User signed up successfully');
     this.form.reset();
     this._router.navigate(['/dashboard']);
   }
 
-  showAlert(message: string) {
-    this.alertMessage.set(message);
+  triggerToast(status: 'success' | 'error' | 'info', message: string) {
+    this.toastStatus = status;
+    this.toastMessage = message;
+    this.showToast = true;
 
     setTimeout(() => {
-      this.alertMessage.set('');
+      this.showToast = false;
     }, 3000);
   }
 }
