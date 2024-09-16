@@ -3,12 +3,16 @@
     <app-brand />
   </div>
 
+  @if (alertMessage()) {
+  <p class="text-center text-xs">{{ alertMessage() }}</p>
+  }
+
   <div class="my-12">
     <h1 class="font-bold text-2xl mb-4 text-black">Let's Sign In!</h1>
     <p class="text-black text-sm">Login to Your Account to Continue</p>
   </div>
 
-  <form>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="space-y-5">
       <div>
         <app-input-field
