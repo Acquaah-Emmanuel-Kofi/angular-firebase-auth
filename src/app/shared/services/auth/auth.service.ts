@@ -4,6 +4,7 @@ import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
   signInWithEmailAndPassword,
+  signOut,
   UserCredential,
 } from '@angular/fire/auth';
 import { doc, Firestore, setDoc } from '@angular/fire/firestore';
@@ -57,6 +58,16 @@ export class AuthService {
       });
 
     return from(response);
+  }
+
+  signOut() {
+    signOut(this._fireAuth)
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        throw new Error(error.message);
+      });
   }
 
   async saveUserDetails(user: IUser) {
