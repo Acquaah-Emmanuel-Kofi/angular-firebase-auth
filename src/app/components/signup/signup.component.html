@@ -1,17 +1,18 @@
 <app-loader [isLoading]="isLoading" />
+<app-toaster
+  [show]="showToast"
+  [message]="toastMessage"
+  [status]="toastStatus"
+/>
 
 <section class="bg-[#F1F1F1] p-6 min-h-screen">
   <div class="w-full flex justify-center items-center">
     <app-brand />
   </div>
 
-  @if (alertMessage()) {
-  <p class="text-center text-xs">{{ alertMessage() }}</p>
-  }
-
   <div class="my-12">
     <h1 class="font-bold text-2xl mb-4 text-black">Create an Account!</h1>
-    <p class="text-black text-sm">Join out community</p>
+    <p class="text-black text-sm">Join our community</p>
   </div>
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
